@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.75.128:3306/batch?autoReconnect=true
+    username: root
+    password: 123456
+
+  sql:
+    init:
+      data-locations: classpath:org/springframework/batch/core/schema-mysql.sql
+      mode: never
