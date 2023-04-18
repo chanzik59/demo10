@@ -2,6 +2,7 @@ package com.example.batch.config;
 
 import com.example.batch.validate.AnnotationListener;
 import com.example.batch.validate.BatchChunkListener;
+import com.example.batch.validate.BatchJobDecider;
 import com.example.batch.validate.BatchStepListener;
 import com.example.batch.validate.BatchValidate;
 import com.example.batch.validate.BathJobListener;
@@ -15,6 +16,8 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.CompositeJobParametersValidator;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.listener.JobListenerFactoryBean;
@@ -81,26 +84,42 @@ public class BatchConfig {
      */
     @Bean
     public CompositeJobParametersValidator compositeValidator(BatchValidate validate, DefaultJobParametersValidator defaultValidator) {
-
         CompositeJobParametersValidator compositeValidator = new CompositeJobParametersValidator();
-
         compositeValidator.setValidators(Arrays.asList(validate, defaultValidator));
-
         return compositeValidator;
 
     }
 
 
-    @Bean
+    //    @Bean
     public Job job(AnnotationListener listener, Step stepChunk, @Qualifier("compositeValidator") JobParametersValidator validator, BathJobListener jobListener) {
         return jobBuilderFactory.get("jobIncrement")
                 //作业增量器
                 .incrementer(new RunIdIncrementer())
                 .incrementer(new DateTimeIncrementer())
                 .validator(validator)
-//                .listener(jobListener)
+                .listener(jobListener)
                 .listener(JobListenerFactoryBean.getListener(listener))
                 .start(stepChunk).build();
+    }
+
+
+    /**
+     * 流程化job
+     *
+     * @param startStep
+     * @param successStep
+     * @param failStep
+     * @return
+     */
+//    @Bean
+    public Job logicJob(Step startStep, Step successStep, Step failStep) {
+        return jobBuilderFactory.get("logicJob")
+                .incrementer(new RunIdIncrementer())
+                .start(startStep).on("FAILED").stopAndRestart(successStep)
+                .from(startStep).on("*").to(successStep)
+                .end()
+                .build();
     }
 
 
@@ -120,7 +139,8 @@ public class BatchConfig {
     public Step startStep() {
         return stepBuilderFactory.get("startStep").tasklet((contribution, chunkContext) -> {
             log.info("流程开始");
-            return RepeatStatus.FINISHED;
+            throw new RuntimeException("模拟失败");
+//            return RepeatStatus.FINISHED;
         }).build();
     }
 
@@ -138,6 +158,112 @@ public class BatchConfig {
     public Step failStep() {
         return stepBuilderFactory.get("failStep").tasklet((contribution, chunkContext) -> {
             log.info("执行失败");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+
+    @Bean
+    public Step firstStep() {
+        return stepBuilderFactory.get("first").tasklet((contribution, chunkContext) -> {
+            log.info("first");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+
+    /**
+     * 自定义决策器
+     *
+     * @param firstStep
+     * @param stepA
+     * @param stepB
+     * @param stepC
+     * @param decider
+     * @return
+     */
+//    @Bean
+    public Job customJob(Step firstStep, Step stepA, Step stepB, Step stepC, BatchJobDecider decider) {
+        return jobBuilderFactory.get("customJob")
+                .incrementer(new DateTimeIncrementer())
+                .start(firstStep).next(decider)
+                .from(decider).on("A").to(stepA)
+                .from(decider).on("B").to(stepB)
+                .from(decider).on("*").to(stepC)
+                .end()
+                .build();
+    }
+
+
+    /**
+     * 流步骤
+     *
+     * @param stepA
+     * @param stepB
+     * @param stepC
+     * @return
+     */
+    @Bean
+    public Job flowJob(Step stepA, Step stepB, Step stepC) {
+        return jobBuilderFactory.get("customJob")
+                .incrementer(new DateTimeIncrementer())
+                .start(stepA).next(stepB).next(stepC)
+                .build();
+    }
+
+
+    @Bean
+    public Step stepA() {
+        return stepBuilderFactory.get("stepA").tasklet((contribution, chunkContext) -> {
+            log.info("步骤stepA");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+
+    @Bean
+    public Step stepB(Flow flowB) {
+        log.info("步骤stepB");
+        return stepBuilderFactory.get("stepB").flow(flowB).build();
+    }
+
+
+    @Bean
+    public Step stepB1() {
+        return stepBuilderFactory.get("stepB1").tasklet((contribution, chunkContext) -> {
+            log.info("步骤stepB1");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+
+    @Bean
+    public Step stepB2() {
+        return stepBuilderFactory.get("stepB2").tasklet((contribution, chunkContext) -> {
+            log.info("步骤stepB2");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+    @Bean
+    public Step stepB3() {
+        return stepBuilderFactory.get("stepB3").tasklet((contribution, chunkContext) -> {
+            log.info("步骤stepB3");
+            return RepeatStatus.FINISHED;
+        }).build();
+    }
+
+    @Bean
+    public Flow flowB(Step stepB1, Step stepB2, Step stepB3) {
+        return new FlowBuilder<Flow>("flowB").start(stepB1).next(stepB2).next(stepB3).build();
+
+    }
+
+
+    @Bean
+    public Step stepC() {
+        return stepBuilderFactory.get("stepC").tasklet((contribution, chunkContext) -> {
+            log.info("步骤stepC");
             return RepeatStatus.FINISHED;
         }).build();
     }

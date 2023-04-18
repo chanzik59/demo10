@@ -1,6 +1,5 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://192.168.75.128:3306/batch?autoReconnect=true
     username: root
     password: 123456
