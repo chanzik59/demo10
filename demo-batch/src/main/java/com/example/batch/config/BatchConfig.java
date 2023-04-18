@@ -153,6 +153,7 @@ public class BatchConfig {
                 .writer(itemWriter)
                 .listener(chunkListener)
                 .listener(batchStepListener)
+
                 .build();
     }
 
