@@ -8,3 +8,7 @@ spring:
     init:
       data-locations: classpath:org/springframework/batch/core/schema-mysql.sql
       mode: never
+  batch:
+    job:
+      #      spring boot 启动就执行
+      enabled: false

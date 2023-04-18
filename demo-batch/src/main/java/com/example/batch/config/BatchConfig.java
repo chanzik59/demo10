@@ -216,6 +216,8 @@ public class BatchConfig {
     public Step stepA() {
         return stepBuilderFactory.get("stepA").tasklet((contribution, chunkContext) -> {
             log.info("步骤stepA");
+            Object name = chunkContext.getStepContext().getJobParameters().get("name");
+            log.info("拿到参数{}",name);
             return RepeatStatus.FINISHED;
         }).build();
     }
