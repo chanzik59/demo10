@@ -40,7 +40,7 @@ import java.util.Arrays;
  * @date 17/4/2023 9:59
  * @info XX
  */
-@Configuration
+//@Configuration
 @Slf4j
 public class BatchConfig {
 

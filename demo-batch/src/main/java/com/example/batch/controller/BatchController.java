@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 18/4/2023 16:23
  * @info XX
  */
-@Controller
+//@Controller
 @Slf4j
 public class BatchController {
     @Autowired
