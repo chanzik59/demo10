@@ -25,6 +25,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Objects;
 
 /**
  * @author chenzhiqin
@@ -41,6 +44,41 @@ public class BatchItemReaderJob {
 
     @Resource
     private StepBuilderFactory stepBuilderFactory;
+
+    public static void main(String[] args) {
+        BigDecimal bigDecimal = BigDecimal.valueOf(3);
+        BigDecimal bigDecimal1 = BigDecimal.valueOf(0);
+
+
+        System.out.println(relativeRatio(bigDecimal, bigDecimal1));
+
+    }
+
+
+    private static String relativeRatio(BigDecimal now, BigDecimal last) {
+        if (Objects.isNull(last) || last.signum() == 0) {
+            return "";
+        }
+        return new DecimalFormat("00.00%").format(divide(now.subtract(last), last.abs()));
+    }
+
+
+    private static BigDecimal divide(BigDecimal sub, BigDecimal sum) {
+        if (Objects.isNull(sum) || sum.signum() == 0) {
+            ;
+            return BigDecimal.ZERO;
+        }
+        return sub.divide(sum, 4, BigDecimal.ROUND_HALF_UP);
+    }
+
+
+    private static String getNum(BigDecimal bigDecimal) {
+        if (Objects.isNull(bigDecimal)) {
+            return "0";
+        } else {
+            return bigDecimal.setScale(0).toString();
+        }
+    }
 
     /**
      * 普通文件映射
