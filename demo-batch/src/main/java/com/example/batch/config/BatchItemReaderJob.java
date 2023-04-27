@@ -11,7 +11,11 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
+import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
+import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
+import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.json.JacksonJsonObjectReader;
@@ -25,16 +29,15 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author chenzhiqin
  * @date 19/4/2023 10:43
  * @info ItemReader测试
  */
-@Component
+//@Component
 @Slf4j
 public class BatchItemReaderJob {
 
@@ -45,40 +48,6 @@ public class BatchItemReaderJob {
     @Resource
     private StepBuilderFactory stepBuilderFactory;
 
-    public static void main(String[] args) {
-        BigDecimal bigDecimal = BigDecimal.valueOf(3);
-        BigDecimal bigDecimal1 = BigDecimal.valueOf(0);
-
-
-        System.out.println(relativeRatio(bigDecimal, bigDecimal1));
-
-    }
-
-
-    private static String relativeRatio(BigDecimal now, BigDecimal last) {
-        if (Objects.isNull(last) || last.signum() == 0) {
-            return "";
-        }
-        return new DecimalFormat("00.00%").format(divide(now.subtract(last), last.abs()));
-    }
-
-
-    private static BigDecimal divide(BigDecimal sub, BigDecimal sum) {
-        if (Objects.isNull(sum) || sum.signum() == 0) {
-            ;
-            return BigDecimal.ZERO;
-        }
-        return sub.divide(sum, 4, BigDecimal.ROUND_HALF_UP);
-    }
-
-
-    private static String getNum(BigDecimal bigDecimal) {
-        if (Objects.isNull(bigDecimal)) {
-            return "0";
-        } else {
-            return bigDecimal.setScale(0).toString();
-        }
-    }
 
     /**
      * 普通文件映射
@@ -129,6 +98,41 @@ public class BatchItemReaderJob {
         return new JdbcCursorItemReaderBuilder<User>().name("cursorReader").dataSource(dataSource).sql("select * from user where age>?").preparedStatementSetter(new ArgumentPreparedStatementSetter(new Object[]{"17"})).rowMapper(userRowMapper).build();
     }
 
+
+    /**
+     * 基于分页
+     *
+     * @param dataSource
+     * @param userRowMapper
+     * @return
+     */
+    @Bean
+    public JdbcPagingItemReader<User> pagingReader(DataSource dataSource, RowMapper userRowMapper, PagingQueryProvider provider) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("age", 16);
+        return new JdbcPagingItemReaderBuilder<User>().name("pagingReader").dataSource(dataSource)
+                .queryProvider(provider).parameterValues(param).pageSize(10).rowMapper(userRowMapper).build();
+    }
+
+
+    /**
+     * 分页逻辑
+     *
+     * @param dataSource
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public PagingQueryProvider pagingQueryProvider(DataSource dataSource) throws Exception {
+        SqlPagingQueryProviderFactoryBean factoryBean = new SqlPagingQueryProviderFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setSelectClause("select * ");
+        factoryBean.setFromClause(" from user");
+        factoryBean.setWhereClause(" where age>:age");
+        factoryBean.setSortKey("id");
+        return factoryBean.getObject();
+    }
+
     @Bean
     public ItemWriter<User> itemWriter() {
         return items -> items.forEach(System.out::println);
@@ -136,8 +140,8 @@ public class BatchItemReaderJob {
 
 
     @Bean
-    public Step step(ItemWriter itemWriter, ItemReader cursorItemReader) {
-        return stepBuilderFactory.get("step5").chunk(1).reader(cursorItemReader).writer(itemWriter).build();
+    public Step step(ItemWriter itemWriter, ItemReader pagingReader) {
+        return stepBuilderFactory.get("step6").chunk(1).reader(pagingReader).writer(itemWriter).build();
     }
 
 
