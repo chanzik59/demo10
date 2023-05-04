@@ -34,7 +34,7 @@ import java.util.Arrays;
  * @date 27/4/2023 15:04
  * @info XX
  */
-@Component
+//@Component
 @Slf4j
 public class BatchItemWriter {
 
