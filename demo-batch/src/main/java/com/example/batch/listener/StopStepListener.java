@@ -1,6 +1,6 @@
-package com.example.batch.validate;
+package com.example.batch.listener;
 
-import lombok.extern.slf4j.Slf4j;
+import com.example.batch.tools.Count;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
@@ -8,21 +8,22 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author chenzhiqin
- * @date 18/4/2023 10:05
- * @info 步骤监听器
+ * @date 19/4/2023 10:44
+ * @info 步骤监听器中断作业
  */
 @Component
-@Slf4j
-public class BatchStepListener implements StepExecutionListener {
+public class StopStepListener implements StepExecutionListener {
     @Override
     public void beforeStep(StepExecution stepExecution) {
 
-        log.info("步骤执行之前：{}", stepExecution.getStepName());
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        log.info("步骤执行之后：{}", stepExecution.getStepName());
+
+        if(!Count.taskCount.equals(Count.readCount)){
+            return  ExitStatus.STOPPED;
+        }
         return stepExecution.getExitStatus();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.batch.validate;
+package com.example.batch.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ChunkListener;

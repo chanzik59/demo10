@@ -17,7 +17,6 @@ import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.batch.item.validator.BeanValidatingItemProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -27,7 +26,6 @@ import java.util.Arrays;
  * @date 27/4/2023 14:26
  * @info XX
  */
-//@Component
 @Slf4j
 public class BatchItemProcessor {
 

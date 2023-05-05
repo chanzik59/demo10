@@ -21,9 +21,9 @@ import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.batch.item.support.builder.CompositeItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.PathResource;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -34,7 +34,6 @@ import java.util.Arrays;
  * @date 27/4/2023 15:04
  * @info XX
  */
-//@Component
 @Slf4j
 public class BatchItemWriter {
 

@@ -1,5 +1,7 @@
 package com.example.batch.config;
 
+import com.example.batch.listener.StopStepListener;
+import com.example.batch.tools.Count;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -15,7 +17,7 @@ import javax.annotation.Resource;
  * @date 19/4/2023 10:43
  * @info XX
  */
-//@Component
+
 @Slf4j
 public class BatchStopJob {
 

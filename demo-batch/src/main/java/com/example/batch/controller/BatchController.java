@@ -1,5 +1,6 @@
 package com.example.batch.controller;
 
+import com.example.batch.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -12,16 +13,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
+
 /**
  * @author chenzhiqin
  * @date 18/4/2023 16:23
- * @info XX
+ * @info  控制层
  */
-//@Controller
+@Controller
 @Slf4j
 public class BatchController {
     @Autowired
     private Job job;
+
+    @Autowired
+    private Job saveDbJob;
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -30,11 +36,30 @@ public class BatchController {
     @Autowired
     private JobExplorer jobExplorer;
 
+    @Resource
+    private EmployeeService employeeService;
+
+
     @RequestMapping("batch")
     @ResponseBody
     public ExitStatus batch() throws Exception {
-        log.info("被访问。。。");
         JobParameters jobParameters = new JobParametersBuilder(jobExplorer).getNextJobParameters(job).addString("name", "小刚").toJobParameters();
         return jobLauncher.run(job, jobParameters).getExitStatus();
+    }
+
+
+    @RequestMapping("dataInit")
+    @ResponseBody
+    public String dataInit() {
+        return employeeService.dataInit();
+    }
+
+
+    @RequestMapping("csvToDb")
+    @ResponseBody
+    public ExitStatus toDb() throws Exception {
+        employeeService.truncateTemp();
+        JobParameters jobParameters = new JobParametersBuilder(jobExplorer).getNextJobParameters(saveDbJob).addLong("time", System.currentTimeMillis()).toJobParameters();
+        return jobLauncher.run(saveDbJob, jobParameters).getExitStatus();
     }
 }

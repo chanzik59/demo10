@@ -1,5 +1,7 @@
 package com.example.batch.config;
 
+import com.example.batch.listener.StopStepListener;
+import com.example.batch.tools.Count;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -7,7 +9,6 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
  * @date 19/4/2023 10:43
  * @info 暂停标识实现暂停
  */
-//@Component
+
 @Slf4j
 public class BatchStopFlagJob {
 

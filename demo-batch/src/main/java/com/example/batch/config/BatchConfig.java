@@ -1,12 +1,12 @@
 package com.example.batch.config;
 
-import com.example.batch.validate.AnnotationListener;
-import com.example.batch.validate.BatchChunkListener;
-import com.example.batch.validate.BatchJobDecider;
-import com.example.batch.validate.BatchStepListener;
-import com.example.batch.validate.BatchValidate;
-import com.example.batch.validate.BathJobListener;
-import com.example.batch.validate.DateTimeIncrementer;
+import com.example.batch.listener.AnnotationListener;
+import com.example.batch.listener.BatchChunkListener;
+import com.example.batch.listener.BatchStepListener;
+import com.example.batch.listener.BathJobListener;
+import com.example.batch.tools.BatchJobDecider;
+import com.example.batch.tools.BatchValidate;
+import com.example.batch.tools.DateTimeIncrementer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersValidator;
@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
@@ -40,7 +39,6 @@ import java.util.Arrays;
  * @date 17/4/2023 9:59
  * @info XX
  */
-//@Configuration
 @Slf4j
 public class BatchConfig {
 
@@ -182,7 +180,7 @@ public class BatchConfig {
      * @param decider
      * @return
      */
-//    @Bean
+    @Bean
     public Job customJob(Step firstStep, Step stepA, Step stepB, Step stepC, BatchJobDecider decider) {
         return jobBuilderFactory.get("customJob")
                 .incrementer(new DateTimeIncrementer())
@@ -217,7 +215,7 @@ public class BatchConfig {
         return stepBuilderFactory.get("stepA").tasklet((contribution, chunkContext) -> {
             log.info("步骤stepA");
             Object name = chunkContext.getStepContext().getJobParameters().get("name");
-            log.info("拿到参数{}",name);
+            log.info("拿到参数{}", name);
             return RepeatStatus.FINISHED;
         }).build();
     }

@@ -1,5 +1,7 @@
 package com.example.batch;
 
+import com.example.batch.entity.Employee;
+import com.example.batch.mapper.EmployeeMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
@@ -35,6 +37,9 @@ public class BatchTestApp {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
 
     public Tasklet tasklet() {
         return (contribution, chunkContext) -> {
@@ -62,6 +67,20 @@ public class BatchTestApp {
     @Test
     public void test() throws Exception {
         jobLauncher.run(job(), new JobParameters());
+    }
+
+
+    @Test
+    public void testDb() {
+        Employee employee = new Employee();
+        employee.setId(0);
+        employee.setAge(12);
+        employee.setSex(1);
+        employee.setName("小芳");
+//        employeeMapper.save(employee);
+        employeeMapper.saveTemp(employee);
+
+//        employeeMapper.truncateAll();
     }
 
 

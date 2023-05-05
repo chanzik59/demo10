@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -37,7 +36,6 @@ import java.util.Map;
  * @date 19/4/2023 10:43
  * @info ItemReader测试
  */
-//@Component
 @Slf4j
 public class BatchItemReaderJob {
 

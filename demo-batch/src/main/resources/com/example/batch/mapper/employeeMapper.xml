@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.batch.mapper.EmployeeMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.batch.entity.Employee">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="age" jdbcType="VARCHAR" property="age"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+    </resultMap>
+
+    <sql id="columns">id,name,age,sex</sql>
+
+    <insert id="save" keyColumn="id" useGeneratedKeys="true" keyProperty="id">
+        insert into employee(<include refid="columns"/>) values(#{id},#{name},#{age},#{sex})
+    </insert>
+
+    <insert id="saveTemp" keyColumn="id" useGeneratedKeys="true" keyProperty="id">
+        insert into employee_temp(<include refid="columns"/>) values(#{id},#{name},#{age},#{sex})
+    </insert>
+
+
+    <delete id="truncateAll">
+        truncate employee
+    </delete>
+
+    <delete id="truncateTempAll">
+        truncate employee_temp
+    </delete>
+</mapper>

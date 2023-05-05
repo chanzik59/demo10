@@ -11,4 +11,15 @@ spring:
   batch:
     job:
       #      spring boot 启动就执行
-      enabled: true
+      enabled: false
+mybatis:
+  configuration:
+    default-executor-type: batch
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+batch:
+  save:
+    path: C:\Users\phone\Desktop\TestFile\batch
+
+logging:
+  file:
+    name: server.log

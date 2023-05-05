@@ -1,7 +1,7 @@
 package com.example.batch.config;
 
 import com.example.batch.entity.User;
-import com.example.batch.entity.UserPartitioner;
+import com.example.batch.tools.UserPartitioner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -23,7 +23,6 @@ import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
@@ -34,7 +33,6 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
  * @info XX
  */
 @Slf4j
-@Configuration
 public class BatchThreadJob {
 
 
