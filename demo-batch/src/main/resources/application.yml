@@ -3,6 +3,10 @@ spring:
     url: jdbc:mysql://192.168.75.129:3306/batch?autoReconnect=true
     username: root
     password: 123456
+    hikari:
+      maximum-pool-size: 60
+      idle-timeout: 180000
+      auto-commit: true
 
   sql:
     init:

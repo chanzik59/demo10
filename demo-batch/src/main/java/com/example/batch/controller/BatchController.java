@@ -23,11 +23,15 @@ import javax.annotation.Resource;
 @Controller
 @Slf4j
 public class BatchController {
-    @Autowired
+
+    @Resource
     private Job job;
 
     @Autowired
     private Job saveDbJob;
+
+    @Resource
+    private Job employeeJob;
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -61,5 +65,14 @@ public class BatchController {
         employeeService.truncateTemp();
         JobParameters jobParameters = new JobParametersBuilder(jobExplorer).getNextJobParameters(saveDbJob).addLong("time", System.currentTimeMillis()).toJobParameters();
         return jobLauncher.run(saveDbJob, jobParameters).getExitStatus();
+    }
+
+
+    @RequestMapping("dbToDb")
+    @ResponseBody
+    public ExitStatus dbToDb() throws Exception {
+        employeeService.truncate();
+        JobParameters jobParameters = new JobParametersBuilder(jobExplorer).getNextJobParameters(employeeJob).addLong("time", System.currentTimeMillis()).toJobParameters();
+        return jobLauncher.run(employeeJob, jobParameters).getExitStatus();
     }
 }

@@ -3,6 +3,7 @@ package com.example.batch.mapper;
 import com.example.batch.entity.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenzhiqin
@@ -42,7 +43,16 @@ public interface EmployeeMapper {
     /**
      * 分页查询
      *
+     * @param params
      * @return
      */
-    List<Employee> getTempByPage();
+    List<Employee> getTempByPage(Map<String, Object> params);
+
+
+    /**
+     * 测试
+     *
+     * @return
+     */
+    List<Employee> getByPage();
 }

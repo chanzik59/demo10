@@ -53,8 +53,8 @@ public class BatchDbJob {
     @StepScope
     public MyBatisPagingItemReader<Employee> dbReader(@Value("#{stepExecutionContext['from']}") Integer from,
                                                       @Value("#{stepExecutionContext['to']}") Integer to,
+                                                      @Value("#{stepExecutionContext['range']}") Integer range,
                                                       SqlSessionFactory sqlSessionFactory) {
-
         MyBatisPagingItemReader<Employee> itemReader = new MyBatisPagingItemReader<>();
         itemReader.setSqlSessionFactory(sqlSessionFactory);
         itemReader.setQueryId("com.example.batch.mapper.EmployeeMapper.getTempByPage");
@@ -68,7 +68,7 @@ public class BatchDbJob {
     }
 
 
-    @Bean
+    @Bean("employeeWriter")
     public MyBatisBatchItemWriter<Employee> dbWriter(SqlSessionFactory sqlSessionFactory) {
         MyBatisBatchItemWriter<Employee> itemWriter = new MyBatisBatchItemWriter<>();
         itemWriter.setSqlSessionFactory(sqlSessionFactory);
@@ -79,11 +79,11 @@ public class BatchDbJob {
 
 
     @Bean("employeeWork")
-    public Step workStep(ItemWriter dbWriter, ItemReader dbReader) {
+    public Step workStep(ItemWriter employeeWriter, ItemReader dbReader) {
         return stepBuilderFactory.get("work_step")
                 .chunk(pageSize)
                 .reader(dbReader)
-                .writer(dbWriter)
+                .writer(employeeWriter)
                 .build();
     }
 

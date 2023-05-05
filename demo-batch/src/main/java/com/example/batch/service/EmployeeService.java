@@ -19,4 +19,11 @@ public interface EmployeeService {
      * 清空临时表
      */
     void truncateTemp();
+
+
+
+    /**
+     * 清空表
+     */
+    void truncate();
 }

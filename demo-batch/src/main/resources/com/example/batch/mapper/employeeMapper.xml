@@ -27,4 +27,14 @@
     <delete id="truncateTempAll">
         truncate employee_temp
     </delete>
+
+    <select id="getTempByPage" resultMap="BaseResultMap">
+        select * from employee_temp where id between #{from} and #{to}   limit  #{_pagesize}  OFFSET #{_skiprows}
+    </select>
+
+
+    <select id="getByPage" resultMap="BaseResultMap">
+        select * from employee_temp  limit  #{_pagesize}  OFFSET #{_skiprows}
+    </select>
+
 </mapper>

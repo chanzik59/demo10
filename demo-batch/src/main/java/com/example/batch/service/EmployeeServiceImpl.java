@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Random random = new Random();
         long beginTime = System.currentTimeMillis();
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)))) {
-            for (int i = 0; i < 500000; i++) {
+            for (int i = 1; i <= 500000; i++) {
                 String row = String.format("%d,小张%d,%d,%d", i, i, random.nextInt(100), random.nextBoolean() ? 1 : 0);
                 writer.write(row);
                 writer.newLine();
@@ -54,5 +54,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void truncateTemp() {
         employeeMapper.truncateTempAll();
+    }
+
+    @Override
+    public void truncate() {
+        employeeMapper.truncateAll();
     }
 }

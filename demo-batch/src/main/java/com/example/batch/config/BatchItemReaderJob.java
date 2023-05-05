@@ -1,13 +1,18 @@
 package com.example.batch.config;
 
+import com.example.batch.entity.Employee;
 import com.example.batch.entity.User;
 import com.example.batch.entity.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.batch.MyBatisPagingItemReader;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -22,6 +27,7 @@ import org.springframework.batch.item.json.JacksonJsonObjectReader;
 import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -37,6 +43,7 @@ import java.util.Map;
  * @info ItemReader测试
  */
 @Slf4j
+@Configuration
 public class BatchItemReaderJob {
 
     @Resource
@@ -138,14 +145,40 @@ public class BatchItemReaderJob {
 
 
     @Bean
-    public Step step(ItemWriter itemWriter, ItemReader pagingReader) {
-        return stepBuilderFactory.get("step6").chunk(1).reader(pagingReader).writer(itemWriter).build();
+    public ItemWriter<Employee> employeeItemWriter() {
+        return items -> System.out.println(items);
     }
 
 
     @Bean
-    public Job job(Step step) {
-        return jobBuilderFactory.get("stopJobItemReader1").start(step).build();
+    @StepScope
+    public MyBatisPagingItemReader<Employee>  mybatisReader(SqlSessionFactory sqlSessionFactory) {
+        MyBatisPagingItemReader<Employee> itemReader = new MyBatisPagingItemReader<>();
+        itemReader.setSqlSessionFactory(sqlSessionFactory);
+        itemReader.setQueryId("com.example.batch.mapper.EmployeeMapper.getByPage");
+        itemReader.setPageSize(1000);
+        return itemReader;
+    }
+
+
+
+    @Bean
+    public Step step(ItemWriter employeeItemWriter, ItemReader pagingReader) {
+        return stepBuilderFactory.get("mybatisStep").chunk(1).reader(pagingReader).writer(employeeItemWriter).build();
+    }
+
+
+    @Bean
+    public Step mybatisStep(ItemWriter employeeItemWriter, ItemReader mybatisReader) {
+        return stepBuilderFactory.get("step6").chunk(1000).reader(mybatisReader).writer(employeeItemWriter).build();
+    }
+
+
+
+
+    @Bean
+    public Job job(Step mybatisStep) {
+        return jobBuilderFactory.get("mybatis_job").incrementer(new RunIdIncrementer()).start(mybatisStep).build();
     }
 
 
