@@ -15,6 +15,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -70,18 +71,8 @@ public class BatchTestApp {
     }
 
 
-    @Test
-    public void testDb() {
-        Employee employee = new Employee();
-        employee.setId(0);
-        employee.setAge(12);
-        employee.setSex(1);
-        employee.setName("小芳");
-//        employeeMapper.save(employee);
-        employeeMapper.saveTemp(employee);
 
-//        employeeMapper.truncateAll();
-    }
+
 
 
 }

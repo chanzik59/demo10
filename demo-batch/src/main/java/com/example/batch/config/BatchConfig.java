@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersValidator;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author chenzhiqin
@@ -89,7 +91,7 @@ public class BatchConfig {
     }
 
 
-    //    @Bean
+    // @Bean
     public Job job(AnnotationListener listener, Step stepChunk, @Qualifier("compositeValidator") JobParametersValidator validator, BathJobListener jobListener) {
         return jobBuilderFactory.get("jobIncrement")
                 //作业增量器
@@ -299,8 +301,6 @@ public class BatchConfig {
     @StepScope
     public Tasklet tasklet1(@Value("#{jobParameters['name']}") String name) {
         return (stepContribution, chunkContext) -> {
-
-
             ExecutionContext executionContext = chunkContext.getStepContext().getStepExecution().getExecutionContext();
             executionContext.put("value-step", "666");
             ExecutionContext executionContext1 = chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext();

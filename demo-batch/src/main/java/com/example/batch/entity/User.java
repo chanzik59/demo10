@@ -1,6 +1,8 @@
 package com.example.batch.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +14,8 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     private long id;

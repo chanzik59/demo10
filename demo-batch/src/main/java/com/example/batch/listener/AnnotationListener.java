@@ -17,7 +17,6 @@ public class AnnotationListener {
 
     @BeforeJob
     public void before(JobExecution jobExecution) {
-
         log.info("执行之前{}", jobExecution.getStatus());
     }
 

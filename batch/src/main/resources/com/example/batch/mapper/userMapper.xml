@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.batch.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.batch.entity.User">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="age" jdbcType="VARCHAR" property="age"/>
+    </resultMap>
+
+    <sql id="columns">id ,name,age</sql>
+
+    <insert id="save" keyColumn="id" useGeneratedKeys="true" keyProperty="id">
+        insert into user_temp (<include refid="columns"/>) values(#{id},#{name},#{age})
+    </insert>
+
+
+    <select id="allUser" resultMap="BaseResultMap">
+        select *
+        from user limit #{_pagesize}
+        OFFSET #{_skiprows}
+    </select>
+
+
+
+    <select id="all" resultMap="BaseResultMap">
+        select * from user
+    </select>
+
+
+</mapper>
