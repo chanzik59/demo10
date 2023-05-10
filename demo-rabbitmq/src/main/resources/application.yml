@@ -1,9 +1,21 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
+  datasource:
+    url: jdbc:mysql://192.168.75.129:3306/batch?autoReconnect=true
+    username: root
+    password: 123456
   rabbitmq:
     host: 192.168.75.129
     port: 5672
     username: rabbit
     password: 123456
+#   开启消息确认-已发送到交换机
+    publisher-confirm-type: correlated
+#   开启消息确认-已发送到队列
+    publisher-returns: true
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-executor-type: simple
