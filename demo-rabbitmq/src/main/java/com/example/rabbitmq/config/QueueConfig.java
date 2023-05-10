@@ -5,6 +5,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+
 /**
  * @author chenzhiqin
  * @date 9/5/2023 11:50
@@ -13,6 +15,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfig {
 
+    /**
+     *
+     * @return
+     */
     @Bean
     public Queue directQueue() {
         return new Queue(RabbitConstants.DIRECT_QUEUE, false, false, false);
