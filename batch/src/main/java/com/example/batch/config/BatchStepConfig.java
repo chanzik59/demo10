@@ -9,6 +9,7 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -116,10 +117,11 @@ public class BatchStepConfig {
 
 
     @Bean
-    public Step myBatisStep(ItemReader<User> myBatisReader, ItemWriter myBatisWriter) {
+    public Step myBatisStep(ItemReader<User> myBatisReader, ItemWriter myBatisWriter, ItemProcessor compositeProcessor) {
         return stepBuilderFactory.get("mybatis_step")
                 .<User, User>chunk(10)
                 .reader(myBatisReader)
+                .processor(compositeProcessor)
                 .writer(myBatisWriter)
                 .build();
     }

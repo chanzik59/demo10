@@ -3,6 +3,8 @@ package com.example.batch.entity;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.validation.constraints.Max;
+
 /**
  * @author chenzhiqin
  * @date 9/5/2023 13:56
@@ -16,6 +18,7 @@ public class User {
 
     private String name;
 
+    @Max(150)
     private String age;
 
     private String address;

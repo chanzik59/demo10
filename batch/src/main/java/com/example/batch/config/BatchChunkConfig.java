@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 import org.mybatis.spring.batch.MyBatisPagingItemReader;
-import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
@@ -17,6 +17,8 @@ import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
 import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
+import org.springframework.batch.item.support.CompositeItemProcessor;
+import org.springframework.batch.item.validator.BeanValidatingItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.PathResource;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 /**
  * @author chenzhiqin
@@ -107,7 +110,7 @@ public class BatchChunkConfig {
     }
 
     @Bean
-    public MyBatisPagingItemReader<User>  myBatisReader(){
+    public MyBatisPagingItemReader<User> myBatisReader() {
         MyBatisPagingItemReader<User> reader = new MyBatisPagingItemReader<>();
         reader.setSqlSessionFactory(sqlSessionFactory);
         reader.setPageSize(100);
@@ -115,15 +118,29 @@ public class BatchChunkConfig {
         return reader;
     }
 
+    @Bean
+    public BeanValidatingItemProcessor<User> validateProcessor() {
+        BeanValidatingItemProcessor<User> itemProcessor = new BeanValidatingItemProcessor<>();
+        itemProcessor.setFilter(true);
+        return itemProcessor;
+    }
+
 
     @Bean
-    public MyBatisBatchItemWriter<User> myBatisWriter(){
+    public CompositeItemProcessor<User, User> compositeProcessor(ItemProcessor<User, User> validateProcessor, ItemProcessor<User, User> itemAgeFilter) {
+        CompositeItemProcessor<User, User> processor = new CompositeItemProcessor<>();
+        processor.setDelegates(Arrays.asList(validateProcessor, itemAgeFilter));
+        return processor;
+    }
+
+
+    @Bean
+    public MyBatisBatchItemWriter<User> myBatisWriter() {
         MyBatisBatchItemWriter<User> writer = new MyBatisBatchItemWriter<>();
         writer.setSqlSessionFactory(sqlSessionFactory);
         writer.setStatementId("com.example.batch.mapper.UserMapper.save");
         return writer;
     }
-
 
 
 }
