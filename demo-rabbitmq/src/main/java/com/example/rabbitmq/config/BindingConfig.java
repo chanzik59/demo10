@@ -3,6 +3,7 @@ package com.example.rabbitmq.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.CustomExchange;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
@@ -63,5 +64,27 @@ public class BindingConfig {
     @Bean
     public Binding fanout2Biding(FanoutExchange fanoutExchange, Queue fanout2) {
         return BindingBuilder.bind(fanout2).to(fanoutExchange);
+    }
+
+    /**
+     * 绑定备份队列与备份交换机
+     *
+     * @param backupExchange
+     * @param warn
+     * @return
+     */
+    @Bean
+    public Binding warnBinding(FanoutExchange backupExchange, Queue warn) {
+        return BindingBuilder.bind(warn).to(backupExchange);
+    }
+
+    @Bean
+    public Binding backupBinding(FanoutExchange backupExchange, Queue backup) {
+        return BindingBuilder.bind(backup).to(backupExchange);
+    }
+
+    @Bean
+    public Binding delayBinding(CustomExchange delayExchange, Queue delay) {
+        return BindingBuilder.bind(delay).to(delayExchange).with("delay").noargs();
     }
 }

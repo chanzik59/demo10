@@ -16,7 +16,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author chenzhiqin
@@ -52,13 +51,15 @@ public class RabbitMqConsumer {
      * reject 一次只能拒绝一条消息，可以重新入队
      * nack 可以开启一次拒绝多条比deliveryTag 小的消息，可以重新入队
      * ack 用于肯定 表示该消息被正确处理
+     * <p>
+     * 备份交换机 是正常交换机路由队列失败-转发到备份交换机，备份交换机一般采用fanout
      *
      * @param message
      * @param channel
      * @param deliveryTag
      */
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "manual", durable = "false", autoDelete = "false", arguments = {@Argument(name = "x-dead-letter-exchange", value = "dead"), @Argument(name = "x-dead-letter-routing-key", value = "dead"), @Argument(name = "x-message-ttl", value = "10000", type = "java.lang.Integer")}), exchange = @Exchange(value = "manual"), key = "manual"), ackMode = "MANUAL")
-    public void manualAck(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws IOException {
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "manual", durable = "false", autoDelete = "false", arguments = {@Argument(name = "x-dead-letter-exchange", value = "dead"), @Argument(name = "x-dead-letter-routing-key", value = "dead"), @Argument(name = "x-message-ttl", value = "10000", type = "java.lang.Integer"), @Argument(name = "x-max-length", value = "6", type = "java.lang.Integer")}), exchange = @Exchange(value = "manual", arguments = @Argument(name = "alternate-exchange", value = "backup")), key = "manual"), ackMode = "MANUAL")
+    public void manualAck(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) throws Exception {
         log.info("手动确认接收到消息{}", message);
         User user = JSONObject.parseObject(message, User.class);
         if (Integer.valueOf(user.getAge()) <= 100) {
@@ -94,10 +95,21 @@ public class RabbitMqConsumer {
         log.info("fanout1,接收到消息{}", message);
     }
 
-    @RabbitListener(queues = "fanout2")
-    public void fanout2(String message) {
-        log.info("fanout2,接收到消息{}", message);
+    @RabbitListener(queues = "backup")
+    public void backup(String message) {
+        log.info("backup 收到消息{}", message);
     }
+
+    @RabbitListener(queues = "warn")
+    public void warn(String message) {
+        log.info("warn,接收到消息{}", message);
+    }
+
+    @RabbitListener(queues = "delay")
+    public void delay(String message) {
+        log.info("delay,接收到消息{}", message);
+    }
+
 
     /**
      * 死信队列声明和消费
@@ -111,5 +123,17 @@ public class RabbitMqConsumer {
         log.info("死信队列接收到消息:{}", message);
         User user = JSONObject.parseObject(message, User.class);
         userService.addUserTmp(user);
+    }
+
+    /**
+     * rabbitmq 实现rpc调用，使用两个队列发送
+     *
+     * @param message
+     * @return
+     */
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "request"), exchange = @Exchange(value = "request"), key = "rpc"))
+    public String request(String message) {
+        log.info("测试rpc:{}", message);
+        return "aa";
     }
 }

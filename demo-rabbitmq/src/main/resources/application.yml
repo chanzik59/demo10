@@ -11,10 +11,17 @@ spring:
     port: 5672
     username: rabbit
     password: 123456
-#   开启消息确认-已发送到交换机
+    #   开启消息确认-已发送到交换机
     publisher-confirm-type: correlated
-#   开启消息确认-已发送到队列
+    #   开启消息确认-已发送到队列
     publisher-returns: true
+    listener:
+      simple:
+        #    重试机制  如果开启了 1 自动ack ，则达到最大重试次数，会自动转入死信队列  2 如果是手动 ack 则需要手动判断重试次数，进行手动ack
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 3000
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

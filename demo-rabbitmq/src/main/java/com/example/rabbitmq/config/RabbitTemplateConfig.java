@@ -3,6 +3,7 @@ package com.example.rabbitmq.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,4 +41,45 @@ public class RabbitTemplateConfig {
         return rabbitTemplate;
 
     }
+
+
+    /**
+     * 固定队列需要设置监听器不然没法接收到消息
+     *
+     * @param rabbitTemplate
+     * @return
+     */
+    public SimpleMessageListenerContainer container(RabbitTemplate rabbitTemplate) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames("rpc");
+        container.setMessageListener(rabbitTemplate);
+        container.setConcurrentConsumers(100);
+        container.setConcurrentConsumers(100);
+        container.setPrefetchCount(250);
+        return container;
+    }
+
+
+    /**
+     * rpc 1发送的三种种配置 一个是是用固定队列，2使用默认，直接发送可以不用配置，使用template 3 使用临时队列
+     *
+     * @param rabbitTemplate
+     */
+    private void rpcCfg(RabbitTemplate rabbitTemplate) {
+        //设置固定的Reply 地址  需要设置队列监听器
+        rabbitTemplate.setUseTemporaryReplyQueues(false);
+        rabbitTemplate.setReplyAddress("rpc");
+        rabbitTemplate.expectedQueueNames();
+        rabbitTemplate.setUserCorrelationId(true);
+        //使用直接发送
+        rabbitTemplate.setUseTemporaryReplyQueues(false);
+        rabbitTemplate.setReplyAddress("amq.rabbitmq.reply-to");
+        rabbitTemplate.setUserCorrelationId(true);
+        //临时队列 不推荐 性能最差
+        rabbitTemplate.setUseTemporaryReplyQueues(true);
+        rabbitTemplate.setUserCorrelationId(true);
+        rabbitTemplate.setReplyTimeout(10000);
+    }
+
 }

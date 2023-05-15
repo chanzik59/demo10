@@ -5,8 +5,6 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-
 /**
  * @author chenzhiqin
  * @date 9/5/2023 11:50
@@ -16,7 +14,6 @@ import java.util.HashMap;
 public class QueueConfig {
 
     /**
-     *
      * @return
      */
     @Bean
@@ -43,5 +40,26 @@ public class QueueConfig {
     @Bean
     public Queue fanout2() {
         return new Queue("fanout2", false, false, false);
+    }
+
+
+    @Bean
+    public Queue warn() {
+        return new Queue("warn", false, false, false);
+    }
+
+    @Bean
+    public Queue backup() {
+        return new Queue("backup", false, false, false);
+    }
+
+    @Bean
+    public Queue delay() {
+        return new Queue("delay", false, false, false);
+    }
+
+    @Bean
+    public Queue rpc() {
+        return new Queue("rpc", false, false, false);
     }
 }
