@@ -6,12 +6,16 @@ spring:
     url: jdbc:mysql://192.168.75.129:3306/batch?autoReconnect=true
     username: root
     password: 123456
+
   rabbitmq:
-    host: 192.168.75.129
-    port: 5672
+    #    单一模式
+        host: 192.168.75.129
+        port: 5672
     username: rabbit
     password: 123456
-    #   开启消息确认-已发送到交换机
+    #    集群模式  1 普通集群 只能实现高性能不能实现高可用，消息只在单一broker实例中，要结合持久化做消息防丢   2 镜像队列 ，要启用插件，消息内容在，其他实例上会有备份，实现高可用，无法实现高性能
+#    addresses: 192.168.75.130:5672,192.168.75.131:5672
+       开启消息确认-已发送到交换机
     publisher-confirm-type: correlated
     #   开启消息确认-已发送到队列
     publisher-returns: true
@@ -22,6 +26,7 @@ spring:
           enabled: true
           max-attempts: 3
           initial-interval: 3000
+
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
