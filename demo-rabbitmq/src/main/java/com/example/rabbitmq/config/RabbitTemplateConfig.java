@@ -44,6 +44,20 @@ public class RabbitTemplateConfig {
 
 
     /**
+     * template 方式配置事务消息  需要配合{@link org.springframework.transaction.annotation.Transactional} 使用
+     *
+     * @return
+     */
+    public RabbitTemplate txTemplate() {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate();
+        rabbitTemplate.setConnectionFactory(connectionFactory);
+        //事务和发送者确认不能同时存在
+        rabbitTemplate.setChannelTransacted(true);
+        return rabbitTemplate;
+    }
+
+
+    /**
      * 固定队列需要设置监听器不然没法接收到消息
      *
      * @param rabbitTemplate

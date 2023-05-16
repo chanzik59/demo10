@@ -7,6 +7,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,9 @@ public class RabbitController {
 
     @Resource
     private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private RabbitTemplate txTemplate;
 
 
     /**
@@ -82,6 +86,26 @@ public class RabbitController {
         Message message = new Message(body.getBytes(StandardCharsets.UTF_8), properties);
         Object o = rabbitTemplate.convertSendAndReceive(exchange, key, message);
         return "已发送,消息处理:" + o;
+    }
+
+
+    /**
+     * rabbitmq 事务消息和数据库事务有区别，只是防止消息丢失，确保消息能够发送成功，可以用发送者确认代替
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @Transactional
+    @RequestMapping("rabbit/tx")
+    public String sendWithTransactional(HttpServletRequest request) throws Exception {
+        Map<String, String> collect = requestConvert(request);
+        String exchange = collect.remove("exchange");
+        String key = collect.remove("key");
+        String message = JSONObject.toJSONString(collect);
+        txTemplate.convertAndSend(exchange, key, message);
+        return "消息发送成功:" + message;
     }
 
 

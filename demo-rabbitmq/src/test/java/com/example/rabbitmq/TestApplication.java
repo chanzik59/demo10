@@ -1,5 +1,6 @@
 package com.example.rabbitmq;
 
+import com.example.rabbitmq.config.RabbitTemplateConfig;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -29,6 +30,12 @@ public class TestApplication {
     }
 
 
+    /**
+     * 事务开启直到commit才会发消息到队列否则可以回滚不发送
+     *
+     * @throws Exception
+     * @see RabbitTemplateConfig#txTemplate()
+     */
     public static void publish() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("192.168.75.131");
@@ -37,11 +44,18 @@ public class TestApplication {
         factory.setPassword("123456");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare("direct", BuiltinExchangeType.DIRECT);
-        channel.queueDeclare("direct", false, false, false, null);
-        channel.queueBind("direct", "direct", "direct");
-        String message = "hello";
-        channel.basicPublish("direct", "direct", null, message.getBytes(StandardCharsets.UTF_8));
+        channel.txSelect();
+        try {
+            channel.exchangeDeclare("direct", BuiltinExchangeType.DIRECT);
+            channel.queueDeclare("direct", false, false, false, null);
+            channel.queueBind("direct", "direct", "direct");
+            String message = "hello";
+            channel.basicPublish("direct", "direct", null, message.getBytes(StandardCharsets.UTF_8));
+            channel.txCommit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            channel.txRollback();
+        }
 
     }
 
