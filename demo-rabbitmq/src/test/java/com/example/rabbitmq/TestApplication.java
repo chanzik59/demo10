@@ -26,7 +26,7 @@ public class TestApplication {
 
     public static void main(String[] args) throws Exception {
         publish();
-        consumer();
+//        consumer();
     }
 
 
@@ -38,7 +38,7 @@ public class TestApplication {
      */
     public static void publish() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("192.168.75.131");
+        factory.setHost("192.168.75.129");
         factory.setPort(5672);
         factory.setUsername("rabbit");
         factory.setPassword("123456");
@@ -62,7 +62,7 @@ public class TestApplication {
 
     public static void consumer() throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("192.168.75.130");
+        factory.setHost("192.168.75.129");
         factory.setPort(5672);
         factory.setUsername("rabbit");
         factory.setPassword("123456");

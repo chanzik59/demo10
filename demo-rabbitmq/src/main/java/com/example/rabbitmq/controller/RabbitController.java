@@ -2,6 +2,7 @@ package com.example.rabbitmq.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.rabbitmq.config.RabbitTemplateConfig;
+import com.example.rabbitmq.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
