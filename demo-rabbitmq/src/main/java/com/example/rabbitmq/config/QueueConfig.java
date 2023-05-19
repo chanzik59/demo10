@@ -5,6 +5,9 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author chenzhiqin
  * @date 9/5/2023 11:50
@@ -14,11 +17,16 @@ import org.springframework.context.annotation.Configuration;
 public class QueueConfig {
 
     /**
+     * 队列设置信息优先级,一共0-255优先级越大，优先级越高，发送消息中携带
+     * 只有消息再队列中阻塞，消息优先级才有作用
+     *
      * @return
      */
     @Bean
     public Queue directQueue() {
-        return new Queue(RabbitConstants.DIRECT_QUEUE, false, false, false);
+        Map<String, Object> arguments = new HashMap<>();
+        arguments.put("x-max-priority", 10);
+        return new Queue(RabbitConstants.DIRECT_QUEUE, false, false, false, arguments);
     }
 
     @Bean

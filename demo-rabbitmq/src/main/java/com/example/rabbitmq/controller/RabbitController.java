@@ -52,9 +52,11 @@ public class RabbitController {
         String exchange = collect.remove("exchange");
         String key = collect.remove("key");
         String time = collect.remove("ttl");
+        String priority = collect.remove("priority");
 
         MessageProperties properties = new MessageProperties();
         properties.setExpiration(time);
+        Optional.ofNullable(priority).map(Integer::valueOf).ifPresent(properties::setPriority);
         Optional.ofNullable(collect.remove("delay")).filter(StringUtils::hasLength).map(Integer::valueOf).ifPresent(properties::setDelay);
         String body = JSONObject.toJSONString(collect);
         log.info("发送消息:{}", body);
