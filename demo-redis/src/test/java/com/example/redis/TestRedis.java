@@ -2,9 +2,11 @@ package com.example.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * @author chenzhiqin
@@ -17,21 +19,37 @@ public class TestRedis {
 
     private Jedis jedis;
 
+    private Jedis poolJedis;
+
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port}")
+    private int redisPort;
+
+    @Value("${spring.redis.password}")
+    private String redisPassword;
+
 
     /**
-     * 常规方式初始化jedis
+     * 普通常规方式使用jedis  不适合生产使用，频繁创建和销毁 影响性能
      */
     @BeforeEach
     public void jedis() {
-        jedis = new Jedis("192.168.75.129", 6379);
+        jedis = new Jedis(redisHost, redisPort);
+        jedis.auth(redisPassword);
+    }
+
+    /**
+     * jedis 连接池使用redis
+     */
+    @BeforeEach
+    public void jedisPool() {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(10);
+        config.setMinIdle(0);
+        poolJedis = new JedisPool(config, redisHost, redisPort, 5000, redisPassword, 0).getResource();
     }
 
 
-    @Test
-    public void test(){
-        jedis.select(0);
-        String name = jedis.get("name");
-        log.info("name:{}",name);
-
-    }
 }
