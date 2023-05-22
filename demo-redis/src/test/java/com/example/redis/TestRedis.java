@@ -2,6 +2,7 @@ package com.example.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import redis.clients.jedis.Jedis;
@@ -32,7 +33,7 @@ public class TestRedis {
 
 
     /**
-     * 普通常规方式使用jedis  不适合生产使用，频繁创建和销毁 影响性能
+     * 普通常规方式使用jedis
      */
     @BeforeEach
     public void jedis() {
@@ -52,4 +53,11 @@ public class TestRedis {
     }
 
 
+    @Test
+    public void test() {
+        poolJedis.select(0);
+        String name = poolJedis.get("name");
+        log.info("name:{}", name);
+
+    }
 }
