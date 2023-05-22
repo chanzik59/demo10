@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * @author chenzhiqin
@@ -94,6 +96,19 @@ public class RabbitTemplateConfig {
         rabbitTemplate.setUseTemporaryReplyQueues(true);
         rabbitTemplate.setUserCorrelationId(true);
         rabbitTemplate.setReplyTimeout(10000);
+    }
+
+
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        HashSet<String> set1 = new HashSet<>();
+        set.add("11");
+        set.add("13");
+        set1.add("11");
+        set1.add("12");
+        set.retainAll(set1);
+        System.out.println(set);
+        Optional.ofNullable(set).map(v->v.retainAll(set1)).ifPresent(System.out::println);
     }
 
 }
