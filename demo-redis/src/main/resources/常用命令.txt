@@ -1,0 +1,30 @@
+通用：
+keys  查询所有的key
+type  key的类型
+ttl  返回key的剩余过期时间 秒
+expire 设置过期时间秒
+persist 移除过期时间
+rename 重命名
+exists 判断是否存在
+move 移动到其他库
+del 删除
+
+
+字符串：
+set  新增字符串
+setNx 新增字符串如果不存在
+setEx 新增字符串并且设置超时时间
+setRange 替换内容
+mSet  批量新增字符串
+get 获取字符串
+getRange 截取字符串
+mGet 批量获取字符串
+strLen 获取字符串长度
+append 追加内容
+incr 加一
+incrBy 自定义加
+incrByFloat 加上一个浮点数
+decr 减一
+decrBy 减去任意数
+
+
