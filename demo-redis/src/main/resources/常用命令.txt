@@ -9,7 +9,6 @@ exists 判断是否存在
 move 移动到其他库
 del 删除
 
-
 字符串：
 set  新增字符串
 setNx 新增字符串如果不存在
@@ -26,5 +25,22 @@ incrBy 自定义加
 incrByFloat 加上一个浮点数
 decr 减一
 decrBy 减去任意数
+
+哈希值：
+hGet 获取字段值
+hmGet 批量获取字段值
+hGetAll 获取所有键值
+hSet 新增字段
+hSetNx 如果不存在设置字段值
+hmSet 批量设置字段值
+hKeys 获取所有字段
+hVals 获所有值
+hExists 判断字段是否存在
+hIncrBy 字段值加上整形
+hIncrByFloat  字段加上浮点
+hDel 删除字段
+hLen 字段长度
+
+
 
 
