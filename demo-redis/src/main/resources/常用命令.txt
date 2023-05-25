@@ -54,6 +54,23 @@ lLen 统计列表长度
 lIndex 通过索引获取元素
 lRem 删除元素
 lRange 获取范围内的元素
+lSet 通过索引替换元素
+
+集合：
+sAdd 添加一个元素
+sRem 移除一个元素
+sCard 集合元素的数量
+sMembers 集合中所有元素
+sIsMember 是否是集合中的元素
+sInter 集合取交集
+sUnion 集合取并集
+sDiff 集合取差集
+sScan 遍历集合
+sMove 移动元素到两外一个集合
+
+有序集合：
+https://www.redis.net.cn/order/
+
 
 
 
