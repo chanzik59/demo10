@@ -5,9 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import javax.annotation.Resource;
 
 /**
  * @author chenzhiqin
@@ -30,6 +34,13 @@ public class TestRedis {
 
     @Value("${spring.redis.password}")
     private String redisPassword;
+
+
+    @Resource
+    private RedisTemplate<String, Object> template;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
 
     /**
@@ -55,9 +66,6 @@ public class TestRedis {
 
     @Test
     public void test() {
-        poolJedis.select(0);
-        String name = poolJedis.get("name");
-        log.info("name:{}", name);
-
     }
+
 }

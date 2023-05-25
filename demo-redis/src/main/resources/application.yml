@@ -4,7 +4,9 @@ spring:
     port: 6379
     password: 123456
     lettuce:
+      #      配置连接池需要导入依赖common-pool
       pool:
         max-active: 10
         min-idle: 1
         max-wait: 2000
+    database: 0

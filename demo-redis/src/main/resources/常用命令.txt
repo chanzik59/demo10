@@ -41,6 +41,19 @@ hIncrByFloat  字段加上浮点
 hDel 删除字段
 hLen 字段长度
 
+列表：
+lPush 从左边插入一个元素
+lPushX 如果列表存在左边插入一个元素
+rPush 从右边插入一个元素
+rPushX 如果元素存在右边插入一个元素
+bLPop 列表左边弹出一个元素 可以阻塞
+bRPop 列表右边弹出一个元素 可以阻塞
+lInsert 在某个元素前或者后插入一个元素
+lTrim 对列表进行截取
+lLen 统计列表长度
+lIndex 通过索引获取元素
+lRem 删除元素
+lRange 获取范围内的元素
 
 
 
