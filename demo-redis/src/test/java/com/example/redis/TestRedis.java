@@ -3,6 +3,8 @@ package com.example.redis;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +14,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.Resource;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author chenzhiqin
@@ -42,6 +46,8 @@ public class TestRedis {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    private RedissonClient redissonClient;
 
     /**
      * 普通常规方式使用jedis

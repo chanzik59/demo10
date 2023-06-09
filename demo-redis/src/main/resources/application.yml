@@ -1,5 +1,22 @@
 spring:
   redis:
+    #    哨兵模式，旨在解决读写分离，读多写少的情况
+    #    1 监控  2 故障转移  3 通知
+    #    sentinel ping不通节点认为主观下线，超过一半sentinel都认为这个节点下线即客观下线
+    #    故障转移步骤： 1 sentinel leader 选举 需要获得（超过一半的支持,所以哨兵最少要三个节点，否则无法选举出leader）
+    #                2 选举  断开时长(超过时长失去资格)>优先级>offset>runId
+    #                3 被选举salve 执行salve no one成为master
+    #                4 其他slave 执行slave of 成为该节点salve
+    #                5 原修改配置让原master重新上线成为新mater的salve
+    sentinel:
+      master:
+      nodes:
+    #
+    #      分片集群模式 旨在解决，写入量大，存储数据多，读写分离
+    #      1 依赖插槽机制 一共0-16383 按照key的有效值计算hash % 16384 获取插槽位置带{} 内为有效值，没有{}全key为有效值
+    #      2 集群间master互相监控，如果master 下载则提升salve 为master  和哨兵模式类似
+    cluster:
+      nodes:
     host: 192.168.75.129
     port: 6379
     password: 123456

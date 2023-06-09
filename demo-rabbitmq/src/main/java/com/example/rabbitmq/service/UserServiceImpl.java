@@ -1,5 +1,6 @@
 package com.example.rabbitmq.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.rabbitmq.entity.User;
 import com.example.rabbitmq.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUserTmp(User user) {
         return userMapper.saveTemp(user);
+    }
+
+    public static void main(String[] args) {
+
+
     }
 }
