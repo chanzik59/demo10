@@ -7,6 +7,8 @@
         <module>demo-rabbitmq</module>
         <module>batch</module>
         <module>demo-redis</module>
+        <module>sharding</module>
+        <module>pattern</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
