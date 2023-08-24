@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: userserivce
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        ephemeral: false
+      config:
+        file-extension: yaml

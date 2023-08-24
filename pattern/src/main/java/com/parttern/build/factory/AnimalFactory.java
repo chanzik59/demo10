@@ -6,12 +6,6 @@ package com.parttern.build.factory;
  * @info XX
  */
 public class AnimalFactory {
-
-
-    public static void main(String[] args) {
-        buildAnimal("dog").cry();
-    }
-
     public static Animal buildAnimal(String name){
         if("dog".equals(name)){
             return new Dog();

@@ -1,0 +1,16 @@
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri:  lb://userservice
+#          uri:  http://localhost:8081
+          predicates:
+            - Path=/user/**
+            - Method=GET
+  main:
+    web-application-type: reactive
+server:
+  port: 8888
+

@@ -1,0 +1,7 @@
+server:
+  port: 8080
+#feign:
+#  httpclient:
+#    max-connections: 200
+#    max-connections-per-route: 50
+#    enabled: true

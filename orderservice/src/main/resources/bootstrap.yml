@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: orderservice
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        ephemeral: false
+#    nacos:
+#      config:
+#        file-extension: yaml
+#      server-addr: localhost:8848
+#      discovery:
+#        ephemeral: false
