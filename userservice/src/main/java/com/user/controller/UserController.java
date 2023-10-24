@@ -1,10 +1,13 @@
 package com.user.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.user.service.UserService;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * @author chenzhiqin
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RefreshScope
 public class UserController {
 
+    @Resource
+    private UserService userService;
 
 
-//    @Value("${user.age}")
+    //    @Value("${user.age}")
     private String age;
 
 
@@ -34,4 +39,13 @@ public class UserController {
     public String getAge() {
         return age;
     }
+
+
+    @RequestMapping("deduct")
+    @ResponseBody
+    public boolean deduction(Long id, BigDecimal amt) {
+        return userService.deduction(id, amt);
+    }
+
+
 }

@@ -1,10 +1,11 @@
-spring:
-  application:
-    name: userserivce
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        ephemeral: false
-      config:
-        file-extension: yaml
+#spring:
+#  application:
+#    name: userservice
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
+#        group: SEATA_GROUP
+#        ephemeral: false
+#      config:
+#        file-extension: yaml

@@ -1,11 +1,12 @@
-spring:
-  application:
-    name: orderservice
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-        ephemeral: false
+#spring:
+#  application:
+#    name: orderservice
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
+#        group: SEATA_GROUP
+#        ephemeral: false
 #    nacos:
 #      config:
 #        file-extension: yaml

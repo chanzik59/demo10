@@ -1,6 +1,8 @@
 package com.order.controller;
 
 import com.order.config.UserClient;
+import com.order.entity.Order;
+import com.order.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,18 +20,28 @@ import javax.annotation.Resource;
 public class OrderController {
 
     @Resource
-    private RestTemplate template;
-
+    private OrderService orderService;
 
     @Resource
     private UserClient userClient;
 
+    @Resource
+    private RestTemplate template;
+
+
     @RequestMapping("name")
     @ResponseBody
-    public String getName(){
-//        String url="http://userservice/user/name";
-//        String age = template.getForObject(url, String.class);
-        String age = userClient.getAge();
-        return age;
+    private String getName() {
+        return userClient.getAge();
     }
+
+
+    @RequestMapping("place")
+    @ResponseBody
+    public String placeOrder(Order order) {
+        int i = orderService.placeOrder(order);
+        return 1 == i ? "成功" : "失败";
+    }
+
+
 }

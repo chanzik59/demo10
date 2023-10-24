@@ -11,11 +11,13 @@
         <module>userservice</module>
         <module>orderservice</module>
         <module>gateway</module>
+        <module>mvc</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.11</version>
+        <version>2.7.10</version>
+<!--        <version>2.6.11</version>-->
     </parent>
     <groupId>com.example</groupId>
     <artifactId>demo10</artifactId>
@@ -87,6 +89,7 @@
             <artifactId>curator-framework</artifactId>
             <version>4.2.0</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
