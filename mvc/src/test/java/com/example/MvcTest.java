@@ -1,16 +1,20 @@
 package com.example;
 
-import com.example.entity.AA;
-import com.example.entity.Student;
-import com.example.entity.UserProperties;
+import com.example.entity.*;
 import com.example.inf.AnimalService;
 import com.example.inf.UserServiceFa;
 import com.example.inf.UserServiceImpl;
 import com.example.inf.UserServiceImpl3;
+import com.example.mapper.TbTaskMapper;
+import com.example.service.TaskService;
+import com.example.service.TbTaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author czq
@@ -21,39 +25,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class MvcTest {
 
-    @Autowired
-    private UserServiceImpl userService;
 
-//    @Autowired
-    private UserServiceFa userServiceFa;
-
-
-//    @Autowired
-//    private UserServiceImpl3 userService3;
-
-
-    @Autowired
-    private AnimalService animalService;
-
-
-    @Autowired
-    private UserProperties userProperties;
-
-
-    @Value("aa.bb")
-    private String aa;
+    @Resource
+    TbTaskMapper tbTaskMapper;
 
 
     @Test
     public void test() {
-//        userService.findUser();
-//        userService.testFa();
-//           userService.test();
-
-        System.out.println(userProperties);
-//        userService.test2(new Student());
-//
-//        userService3.test3();
+        TbTask tbTask = tbTaskMapper.selectById("1");
+        System.out.println(tbTask);
 
 
     }

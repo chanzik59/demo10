@@ -3,8 +3,12 @@ package com.example.config;
 import com.example.condition.UserServiceCondition;
 import com.example.entity.UserProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * @author czq
@@ -15,4 +19,12 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(UserProperties.class)
 @Configuration
 public class UserConfig {
+
+
+    @Bean
+    public Executor taskPool() {
+        return Executors.newFixedThreadPool(100);
+    }
+
+
 }

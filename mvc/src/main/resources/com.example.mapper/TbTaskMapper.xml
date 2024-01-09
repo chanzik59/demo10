@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TbTaskMapper">
+
+    <resultMap type="com.example.entity.TbTask" id="tbTask">
+        <result property="taskId" column="task_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="taskDesc" column="task_desc"/>
+        <result property="taskExp" column="task_exp"/>
+        <result property="taskStatus" column="task_status"/>
+        <result property="taskClass" column="task_class"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="BASE_COLUMN">
+        task_id
+        ,task_name, task_desc, task_exp, task_status, task_class,update_time,create_time
+    </sql>
+
+
+    <select id="selectAll" resultType="com.example.entity.TbTask">
+        select
+        <include refid="BASE_COLUMN"/>
+        from tb_task
+    </select>
+    <select id="selectById" resultType="com.example.entity.TbTask">
+        select
+        <include refid="BASE_COLUMN"/>
+        from tb_task where task_id=#{taskId}
+    </select>
+
+    <update id="update">
+        update tb_task
+        set task_name=#{taskName},
+            task_desc=#{taskDesc},
+            task_desc=#{taskExp},
+            task_exp=#{taskExp},
+            task_status=#{taskStatus},
+            task_class=#{taskClass},
+            update_time=#{updateTime},
+            createTime=#{createTime}
+        where task_id = #{taskId}
+    </update>
+
+</mapper>
+

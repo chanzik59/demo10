@@ -2,25 +2,12 @@ package com.example.controller;
 
 import com.example.entity.AA;
 import com.example.entity.Student;
-import com.example.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.MediaType;
-import org.springframework.http.server.ServerHttpRequest;
-import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author czq
@@ -32,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ConditionalOnExpression("'${school.name}'.equals('sms1')")
 @ConditionalOnResource(resources = "classpath:test.xml")
 //@ConditionalOnProperty(prefix = "school",name ="name" ,havingValue = "sms")
-public class StudentController{
+public class StudentController {
 
     //    @Lazy
     @Autowired
@@ -41,11 +28,11 @@ public class StudentController{
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Object studentException(Exception e){
+    public Object studentException(Exception e) {
         Student student = new Student();
         student.setId("30");
         student.setName("晓明");
-        return  student;
+        return student;
     }
 
 
@@ -74,10 +61,9 @@ public class StudentController{
     }
 
 
-
     @RequestMapping(value = "user")
     @ResponseBody
-    public  Student  getUser() {
+    public Student getUser() {
 
         Student student = new Student();
         student.setName("aa");

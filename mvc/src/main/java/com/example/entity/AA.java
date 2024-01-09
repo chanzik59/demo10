@@ -4,7 +4,10 @@ import com.example.ant.Secure;
 import lombok.ToString;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.*;
 
 /**
  * @author czq
@@ -18,6 +21,8 @@ import org.springframework.stereotype.Component;
 @Secure
 public class AA {
     String c = "20";
+
+
 
 
 }
