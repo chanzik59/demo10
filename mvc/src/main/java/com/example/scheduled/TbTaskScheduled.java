@@ -80,6 +80,7 @@ public class TbTaskScheduled {
         tbTask.setTaskStatus(status);
         tbTask.setUpdateTime(new Date());
         taskService.update(tbTask);
+        System.out.println("测试1");
     }
 
 }
