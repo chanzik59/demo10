@@ -1,17 +1,14 @@
-package com.user;
+package org.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author chenzhiqin
- * @date 21/8/2023 14:54
- * @info XX
+ * Hello world!
  */
 @SpringBootApplication
-public class UserApp {
+public class Mvc2App {
     public static void main(String[] args) {
-        System.out.println("push 1");
-        SpringApplication.run(UserApp.class, args);
+        SpringApplication.run(Mvc2App.class);
     }
 }

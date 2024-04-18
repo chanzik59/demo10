@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2023/10/20 9:48
  * @Description:
  */
-@EnableWebMvc
+//@EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
 
     @Override

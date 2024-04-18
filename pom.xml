@@ -12,6 +12,7 @@
         <module>orderservice</module>
         <module>gateway</module>
         <module>mvc</module>
+        <module>mvc2</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
