@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class UserApp {
     public static void main(String[] args) {
+        System.out.println("更新1");
         SpringApplication.run(UserApp.class, args);
     }
 }
