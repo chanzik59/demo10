@@ -24,6 +24,7 @@ public class Test {
         System.out.println(s1.getBytes(charset).length);
         System.out.println(s1);
         System.out.println("m3");
+        System.out.println("基准");
 
     }
 
