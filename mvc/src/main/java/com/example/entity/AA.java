@@ -24,6 +24,8 @@ public class AA {
 
     String a="master1";
 
+    String a1="master2";
+
 
 
 
