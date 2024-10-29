@@ -21,6 +21,7 @@ import java.util.concurrent.*;
 @Secure
 public class AA {
     String c = "20";
+    String c1 = "test1";
 
     String a="master1";
 
