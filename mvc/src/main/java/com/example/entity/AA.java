@@ -32,6 +32,8 @@ public class AA {
 
 
 
+    String c2="test2";
+
 
 
 
