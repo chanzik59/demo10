@@ -22,6 +22,8 @@ import java.util.concurrent.*;
 public class AA {
     String c = "20";
 
+    String a="master1";
+
 
 
 
