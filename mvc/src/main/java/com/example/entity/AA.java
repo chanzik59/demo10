@@ -33,6 +33,7 @@ public class AA {
 
 
     String c2="test2";
+    String c3="test3";
 
 
 
