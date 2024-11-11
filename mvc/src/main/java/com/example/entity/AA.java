@@ -30,6 +30,8 @@ public class AA {
     String a5="master5";
     String a6="master6";
 
+    String a7="master7";
+
 
 
     String c2="test2";
